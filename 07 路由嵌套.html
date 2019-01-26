@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <script src="./lib/vue-router-3.0.1.js"></script>
+    <link rel="stylesheet" href="./lib/animate.css">
+</head>
+<body>
+<div id="app">
+    <router-link to="/account">account</router-link>
+    <router-view></router-view>
+</div>
+<template id="temp1">
+    <div>
+        <h1>这是ACCOUNT</h1>
+        <router-link to="/account/login">登录</router-link>
+        <router-link to="/account/register">注册</router-link>
+        <router-view></router-view>
+    </div>
+</template>
+<script>
+    var login = {
+        template:'<h3>登录</h3>'
+    }
+    var register = {
+        template:'<h3>注册</h3>'
+    }
+    var account = {
+        template:'#temp1'
+    }
+    var router = new VueRouter({
+        routes:[
+            {
+                path:'/account' ,
+                component:account,
+                children:[
+                    //注意 在子路由里的 path 匹配的地址 不需要加 / 。
+                    {path:'login',component:login},
+                    {path:'register',component:register}
+                ]
+            }
+        ]
+    })
+
+    var vm = new Vue({
+        el:'#app',
+        data:{},
+        methods:{},
+
+        //将router挂载到vue里面，实现监听。
+        router:router,
+        filters:{},
+        directives:{}
+    })
+</script>
+</body>
+</html>

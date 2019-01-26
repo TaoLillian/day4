@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+<body>
+<div id="app">
+    <combox @reshow="lodecontent"></combox>
+    <ul class="list-group">
+        <li class="list-group-item" v-for="item in list" :key="item.id">
+            <span class="badge">评论人：{{ item.user }}</span>
+            {{item.content}}
+        </li>
+    </ul>
+</div>
+<template id="tem1">
+    <div>
+        <div>
+            <label>评论人：</label>
+            <input type="text" class="form-control" v-model="user">
+        </div>
+
+        <div>
+            <label>评论内容：</label>
+           <textarea class="form-control" v-model="content" ></textarea>
+        </div>
+
+        <div>
+            <input type="button" class="btn btn-primary" value="提交评论" @click="push">
+        </div>
+    </div>
+</template>
+
+<script>
+
+    var comBox = {
+        template:'#tem1',
+        data(){
+            return{
+                content:'',
+                user:'',
+            }
+        },
+        methods:{
+            push(){
+                //定义一个对象，得到用户输入的信息。
+                var con = { id:Date.now(),user:this.user,content:this.content}
+                //首先将localStorage中的对象取出，得到 list 。
+                var list = JSON.parse(localStorage.getItem('cmts')|| '[]')
+                //将得到的 con 添加到list 对象数组中。
+                 list.push(con)
+                //将添加的 list 利用 JSON.stringify 转化为字符串后 存在 localStorage 中。
+                localStorage.setItem('cmts',JSON.stringify(list))
+                //将文本输入框清空。
+                this.user = this.content = ''
+
+                //将父组件的方法传递给子组件调用。
+                this.$emit('reshow')
+
+            }
+        }
+    };
+
+    var vm = new Vue({
+        el:'#app',
+        data:{
+
+            list:[
+                {id : Date.now(),user : '李白', content : '高力士提靴'},
+                {id : Date.now(),user : '杜甫', content : '破茅草屋'},
+                {id : Date.now(),user : '韩愈', content : '不知道说啥了。无语'}
+            ]
+        },
+
+        methods:{
+            lodecontent(){
+                var list = JSON.parse(localStorage.getItem('cmts')|| '[]')
+                this.list=list
+            }
+        },
+        filters:{},
+        directives:{},
+        components :{
+             combox:comBox,
+        },
+        created(){
+            this.lodecontent()
+        }
+    })
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

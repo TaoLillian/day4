@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./lib/animate.css">
+</head>
+<body>
+<div id="app">
+    <!-- 使用 v-on 事件绑定 来将 父组件的 show 方法绑定到 func 上。-->
+    <com @func="show"> </com>
+    <h2>{{ getfromsun}}</h2>
+</div>
+
+<template id="temp">
+    <div>
+        <h1>这是子组件</h1>
+        <!-- 在子组件中 绑定 myclick 事件，在 myclick 事件下调用 func 方法-->
+        <input type="button" value="show" @click="myclick">
+    </div>
+</template>
+<script>
+    var com = {
+        template:'#temp',
+        data(){
+            return{
+                name:'taotao'
+            }
+        },
+        methods:{
+            myclick(){
+                //利用 this.$emit 来调用传递进去的 func 方法。
+                //第一个参数是方法名，从第二参数开始可以传递方法 func 的参数,可以传递多个。
+                this.$emit('func',this.name)
+            }
+        }
+    };
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            getfromsun:null
+        },
+        methods:{
+            show(data){
+                //console.log('父组件show方法'+data)
+                //console.log(data)
+                this.getfromsun = data ;
+            }
+        },
+        filters:{},
+        directives:{},
+        components:{
+            com : com //简写
+            //com
+        }
+    })
+</script>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

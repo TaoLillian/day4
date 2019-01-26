@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <!--1.安装路由对象-->
+    <script src="./lib/vue-router-3.0.1.js"></script>
+    <link rel="stylesheet" href="./lib/animate.css">
+
+</head>
+<body>
+<div id="app">
+
+    <router-link to="/login/1000428587/nmwyneyv" >登录</router-link>
+    <router-link to="/register">注册</router-link>
+    <router-view></router-view>
+
+</div>
+<script>
+    var login = {
+        template:'<h3>这是登录界面 </h3>',
+        data:function(){
+            return {
+                name:'taotao'
+            }
+        },
+        created(){
+//
+            console.log(this.$route.params.id)
+            console.log(this.$route)
+        }
+
+    }
+
+
+    var register = {
+        template:'<h3>这是注册组件</h3>'
+    }
+
+    var routerobj = new VueRouter({
+        routes:[
+            {path:'/' , redirect:'/login'},
+            {path:'/login/:id/:password' , component:login},
+            {path:'/register' ,component: register}
+
+        ]
+
+
+    })
+
+    var vm = new Vue({
+        el:'#app',
+        data:{},
+        methods:{},
+        router:routerobj ,
+        filters:{},
+        directives:{},
+        components:{
+            login:login,
+            register:register
+        }
+    })
+</script>
+</body>
+</html>

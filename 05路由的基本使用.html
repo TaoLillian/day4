@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <!--1.安装路由对象-->
+    <script src="./lib/vue-router-3.0.1.js"></script>
+    <link rel="stylesheet" href="./lib/animate.css">
+    <style>
+        .router-link-active{  /* 这是由vue-router 提供的类，*/
+            font-size: 15px;
+            background-color: pink;
+            font-style: italic;
+        }
+        .v-enter,.v-leave-to{
+            opacity: 0;
+            transform: translateX(90px);
+        }
+        .v-enter-active,.v-leave-active{
+            transition: all 0.9s ease;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--在链接中 匹配地址采用 #/ 来匹配地址。(不推荐)-->
+    <!--<a href="#/login" > 登录 </a>-->
+    <!--<a href="#/register" > 注册 </a>-->
+
+    <!--可以利用 router-link 来实现地址匹配 (推荐) to 属性来匹配地址。tag="" 属性 可以用来改变展示标签。   -->
+    <router-link to="/login" >登录</router-link>
+    <router-link to="/register">注册</router-link>
+
+    <!--动画必须用 transition 包裹起来 -->
+    <transition mode="out-in">
+        <!-- 这是 vue-router 提供的元素，专门用来当作占位符的，将来，路由规则 匹配到的组件，就会展示到 router-view 中。 -->
+        <router-view></router-view>
+    </transition>
+</div>
+<script>
+    var register = {
+        template:'<h3>这是注册组件</h3>'
+    }
+    var login = {
+        template:'<h3>这是登录组件</h3>'
+    }
+    //创建一个路由对象 ， 当导入 vue-router之后会在windows 下有一个路由的构造函数，叫做 VueRouter
+    var routerobj = new VueRouter({
+        routes:[ //路由匹配规则。每个路由规则都是一个对象。
+            // path 表示要监听哪个路由链接地址
+            //component 表示 如果 路由是前面匹配到的path 则展示 component 属性对应的组件
+            //component 的属性值，只能是 一个组件的模板对象 ， 不能是一个 组件的引用名称。
+            {path:'/' , redirect:'/login'}, //redirect 是重定向的意思 ， 当进入到根路径时，会重定向到登录的界面。
+            {path:'/login' , component:login},
+            {path:'/register' ,component: register}
+
+        ],
+        // 可以由自己通过 linkActiveClass 属性自己定义一个类 ， 显示自己想要的样式。
+        // linkActiveClass:''
+
+    })
+
+    var vm = new Vue({
+        el:'#app',
+        data:{},
+        methods:{},
+ //注意   //将 routerobj 注册到vue 实例里面，监听 url 的变化 。
+        router:routerobj ,
+        filters:{},
+        directives:{},
+        components:{
+            login:login,
+            register:register
+        }
+    })
+</script>
+</body>
+</html>
